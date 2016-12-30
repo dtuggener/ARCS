@@ -1,0 +1,101 @@
+##################################################
+# ARCS (Application Related Coreference Scores)  #
+# author: don.tuggener@gmail.com                 #
+##################################################
+
+This tarball contains Python implementations of the three coreference evaluation metrics described in the paper
+Tuggener, Don (2014): Coreference Resolution Evaluation for Higher Level Applications. In Proceedings of EACL 2014.
+
+
+Version history
+---------------
+* Version 1.2 contains another refinement to the arcs_inferred_antecedent.py scorer. 
+We counted the case when a mention links to a nominal antecedent in the response, but not in the key as a wrong linkage error, thus affecting Recall and Precision.
+However, we believe this error should be considered a false positive, because the mention does infer a nominal antecedent when it shouldn't (hence false positive), rather than inferring the wrong nominal antecedent (i.e. wrong linkage). This adjustement increases Recall and, hence, F-measure for all systems, but does not affect Precision.
+
+arcs_inferred_antecedent_1.2
+
+berkely
+NOUN 	R: 58.02 %	P: 60.37 %	F1: 59.18 %	Acc: 81.56 %	(tp: 3981 | wl: 900 | fn: 1980 | fp: 1713 | true mentions: 6866)
+PRP 	R: 53.61 %	P: 53.62 %	F1: 53.62 %	Acc: 64.89 %	(tp: 2687 | wl: 1454 | fn: 871 | fp: 870 | true mentions: 5012)
+PRP$ 	R: 64.43 %	P: 66.80 %	F1: 65.59 %	Acc: 72.48 %	(tp: 998 | wl: 379 | fn: 172 | fp: 117 | true mentions: 1549)
+
+ims
+NOUN 	R: 48.32 %	P: 54.96 %	F1: 51.42 %	Acc: 84.35 %	(tp: 3315 | wl: 615 | fn: 2931 | fp: 2102 | true mentions: 6866)
+PRP 	R: 44.75 %	P: 57.42 %	F1: 50.30 %	Acc: 65.58 %	(tp: 2243 | wl: 1177 | fn: 1592 | fp: 486 | true mentions: 5012)
+PRP$ 	R: 53.00 %	P: 63.54 %	F1: 57.80 %	Acc: 69.40 %	(tp: 821 | wl: 362 | fn: 366 | fp: 109 | true mentions: 1549)
+
+stanford
+NOUN 	R: 51.63 %	P: 57.62 %	F1: 54.46 %	Acc: 81.95 %	(tp: 3541 | wl: 780 | fn: 2538 | fp: 1824 | true mentions: 6866)
+PRP 	R: 38.37 %	P: 45.97 %	F1: 41.83 %	Acc: 56.11 %	(tp: 1923 | wl: 1504 | fn: 1585 | fp: 756 | true mentions: 5012)
+PRP$ 	R: 41.19 %	P: 52.38 %	F1: 46.11 %	Acc: 54.95 %	(tp: 638 | wl: 523 | fn: 388 | fp: 57 | true mentions: 1549)
+
+
+* Version 1.1 contains a small fix for Recall calculation in the arcs_inferred_antecedent.py scorer. Systems gain roughly 0.02 Recall compared to the version used for the paper.
+
+arcs_inferred_antecedent_1.1
+
+berkley
+NOUN 	R: 55.58 %	P: 60.37 %	F1: 57.88 %	Acc: 76.81 %	(tp: 3981 | wl: 1202 | fn: 1980 | fp: 1411 | true mentions: 6866)
+PRP 	R: 48.92 %	P: 53.62 %	F1: 51.16 %	Acc: 58.14 %	(tp: 2687 | wl: 1935 | fn: 871 | fp: 389 | true mentions: 5012)
+PRP$ 	R: 61.95 %	P: 66.80 %	F1: 64.28 %	Acc: 69.35 %	(tp: 998 | wl: 441 | fn: 172 | fp: 55 | true mentions: 1549)
+
+ims
+NOUN 	R: 46.93 %	P: 54.96 %	F1: 50.63 %	Acc: 80.23 %	(tp: 3315 | wl: 817 | fn: 2931 | fp: 1900 | true mentions: 6866)
+PRP 	R: 43.04 %	P: 57.42 %	F1: 49.20 %	Acc: 61.98 %	(tp: 2243 | wl: 1376 | fn: 1592 | fp: 287 | true mentions: 5012)
+PRP$ 	R: 51.51 %	P: 63.54 %	F1: 56.90 %	Acc: 66.86 %	(tp: 821 | wl: 407 | fn: 366 | fp: 64 | true mentions: 1549)
+
+stanford
+NOUN 	R: 50.08 %	P: 57.62 %	F1: 53.59 %	Acc: 78.12 %	(tp: 3541 | wl: 992 | fn: 2538 | fp: 1612 | true mentions: 6866)
+PRP 	R: 36.67 %	P: 45.97 %	F1: 40.80 %	Acc: 52.56 %	(tp: 1923 | wl: 1736 | fn: 1585 | fp: 524 | true mentions: 5012)
+PRP$ 	R: 40.64 %	P: 52.38 %	F1: 45.77 %	Acc: 53.98 %	(tp: 638 | wl: 544 | fn: 388 | fp: 36 | true mentions: 1549)
+
+---------------
+1. REQUIREMENTS    
+python (should work with any version; tested on 2.7.3)
+
+2. INSTALLATION
+none required
+
+3. FILES
+arcs_immediate_antecedents.py       measures the correctness of the immediate antecedent of the mentions
+arcs_inferred_antecedents.py        measures the correctness of the closest inferred nominal antecedent of the mentions
+arcs_anchor_mentions.py             evaluation based on the anchor mentions
+(see the paper for detailed information on the different metrics)
+
+5. USAGE
+In a terminal, write e.g.: 
+$ python arcs_inferred_antecedents.py key_file response_file
+where key_file is the gold coreference annotation and response_file the corresponding system output
+
+6. INPUT FORMAT
+The key and response files need to be in the full CoNLL shared task 2011/2012 format, i.e.
+
+#begin document (bn/voa/01/voa_0179); part 000
+bn/voa/01/voa_0179	0	1	US	NNP	(TOP(S(NP(NML*	-	-	-	-	(GPE)	*	(ARG0*	*	*	*	(1
+bn/voa/01/voa_0179	0	2	Energy	NNP	*	-	-	-	-	(ORG)	*	*	*	*	*	(0)
+bn/voa/01/voa_0179	0	3	Secretary	NNP	*)	-	-	-	-	*	*	*	*	*	*	-
+bn/voa/01/voa_0179	0	4	Bill	NNP	*	-	-	-	-	(PERSON*	*	*	*	*	*	-
+bn/voa/01/voa_0179	0	5	Richardson	NNP	*)	-	-	-	-	*)	*	*)	*	*	*	1)
+...
+
+Skeletonized input like 
+
+#begin document (bn/voa/01/voa_0179); part 000
+bn/voa/01/voa_0179		(1
+bn/voa/01/voa_0179	    (0)
+bn/voa/01/voa_0179	    -
+bn/voa/01/voa_0179	    -
+bn/voa/01/voa_0179	    1)
+...
+
+will NOT work, as the POS and lexem features aren't available. However, You can change the list index of the POS and lexem features in the header of the python scripts in case you are working with a modified format.
+
+7. NOTES
+- The scorers output evaluation for each document separately, and a TOTAL evaluation covering all documents at the end, including detailed pronoun evaluation
+- There is also an Accuracy score (Acc) in the output which is not discussed in the paper. It is calculated by tp/(tp+wl). It thus measures resolution performance over resolved gold mentions only, i.e. excluding false positives and false negatives. It can be seen as a metric to determine the algorithmic strength of the resolution approach, circumventing the anaphoricity detection problem. 
+- Currently, there are no command line arguments to pass along the call
+- You can alter the POS tags for nouns and pronouns in the script headers in case you are working with other languages (it works for the German TuebaD/Z corpus; although not for the anchor mention based evaluation, as the named entity annotation is different in the TuebaD/Z corpus). As already mentioned, you can also alter the list indices of the POS and lexem features.
+
+8. LICENSE
+see gpl-2.0.txt
